@@ -8,13 +8,9 @@ namespace ForBD
     public class Teacher
     {
         public int Id { get; set; }
+        
         public string Name { get; set; }
-
-
-        [ForeignKey(nameof(Discipline))]
-        public int DisciplineId { get; set; }
-
-        public Discipline Discipline { get; set; }
-
+        
+        public ICollection<Recommendation> Recommendations { get; set; }
     }
 }
