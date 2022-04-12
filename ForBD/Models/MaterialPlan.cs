@@ -5,15 +5,15 @@ using System.Text;
 
 namespace ForBD.Models
 {
-    public class MaterialDiscipline
+    public class MaterialPlan
     {
         [ForeignKey(nameof(EducationMaterial))]
         public int MaterialId { get; set; }
 
-        [ForeignKey(nameof(Discipline))]
-        public int DisciplineId { get; set; }
-        
+        [ForeignKey(nameof(Plan))]
+        public int PlanId { get; set; }
+
         public Material EducationMaterial { get; set; }
-        public Discipline Discipline { get; set; }
+        public Plan Plan { get; set; }
     }
 }

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
-namespace ForBD
+namespace ForBD.Models
 {
     public class Discipline
     {
@@ -16,5 +16,7 @@ namespace ForBD
         public int Course { get; set; }
 
         public ICollection<MaterialDiscipline> MaterialDisciplines { get; set; }
+        
+        
     }
 }

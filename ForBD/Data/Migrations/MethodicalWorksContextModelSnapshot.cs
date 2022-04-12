@@ -18,36 +18,7 @@ namespace ForBD.Data.Migrations
                 .HasAnnotation("ProductVersion", "5.0.4")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("ForBD.Accounting", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("InDepartment")
-                        .HasColumnType("int");
-
-                    b.Property<int>("InLibrary")
-                        .HasColumnType("int");
-
-                    b.Property<int>("MaterialId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Total")
-                        .HasColumnType("int");
-
-                    b.Property<int>("TypographyId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("MaterialId");
-
-                    b.ToTable("Accountings");
-                });
-
-            modelBuilder.Entity("ForBD.Discipline", b =>
+            modelBuilder.Entity("ForBD.Models.Discipline", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -68,7 +39,7 @@ namespace ForBD.Data.Migrations
                     b.ToTable("Disciplines");
                 });
 
-            modelBuilder.Entity("ForBD.Material", b =>
+            modelBuilder.Entity("ForBD.Models.Material", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -89,7 +60,7 @@ namespace ForBD.Data.Migrations
                     b.ToTable("Materials");
                 });
 
-            modelBuilder.Entity("ForBD.MaterialDiscipline", b =>
+            modelBuilder.Entity("ForBD.Models.MaterialDiscipline", b =>
                 {
                     b.Property<int>("DisciplineId")
                         .HasColumnType("int");
@@ -104,7 +75,22 @@ namespace ForBD.Data.Migrations
                     b.ToTable("MaterialDisciplines");
                 });
 
-            modelBuilder.Entity("ForBD.Plan", b =>
+            modelBuilder.Entity("ForBD.Models.MaterialPlan", b =>
+                {
+                    b.Property<int>("PlanId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("MaterialId")
+                        .HasColumnType("int");
+
+                    b.HasKey("PlanId", "MaterialId");
+
+                    b.HasIndex("MaterialId");
+
+                    b.ToTable("MaterialPlan");
+                });
+
+            modelBuilder.Entity("ForBD.Models.Plan", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -120,17 +106,12 @@ namespace ForBD.Data.Migrations
                     b.Property<int>("Total")
                         .HasColumnType("int");
 
-                    b.Property<int>("TypographyId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("TypographyId");
 
                     b.ToTable("Plans");
                 });
 
-            modelBuilder.Entity("ForBD.Recommendation", b =>
+            modelBuilder.Entity("ForBD.Models.Recommendation", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -160,7 +141,7 @@ namespace ForBD.Data.Migrations
                     b.ToTable("Recommendations");
                 });
 
-            modelBuilder.Entity("ForBD.Teacher", b =>
+            modelBuilder.Entity("ForBD.Models.Teacher", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -175,50 +156,15 @@ namespace ForBD.Data.Migrations
                     b.ToTable("Teachers");
                 });
 
-            modelBuilder.Entity("ForBD.Typography", b =>
+            modelBuilder.Entity("ForBD.Models.MaterialDiscipline", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("AccountingId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Amount")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Stage")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("AccountingId")
-                        .IsUnique();
-
-                    b.ToTable("Typographies");
-                });
-
-            modelBuilder.Entity("ForBD.Accounting", b =>
-                {
-                    b.HasOne("ForBD.Material", "Material")
-                        .WithMany()
-                        .HasForeignKey("MaterialId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Material");
-                });
-
-            modelBuilder.Entity("ForBD.MaterialDiscipline", b =>
-                {
-                    b.HasOne("ForBD.Discipline", "Discipline")
+                    b.HasOne("ForBD.Models.Discipline", "Discipline")
                         .WithMany("MaterialDisciplines")
                         .HasForeignKey("DisciplineId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("ForBD.Material", "EducationMaterial")
+                    b.HasOne("ForBD.Models.Material", "EducationMaterial")
                         .WithMany("MaterialDisciplines")
                         .HasForeignKey("MaterialId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -229,32 +175,40 @@ namespace ForBD.Data.Migrations
                     b.Navigation("EducationMaterial");
                 });
 
-            modelBuilder.Entity("ForBD.Plan", b =>
+            modelBuilder.Entity("ForBD.Models.MaterialPlan", b =>
                 {
-                    b.HasOne("ForBD.Typography", "Typography")
+                    b.HasOne("ForBD.Models.Material", "EducationMaterial")
                         .WithMany("Plans")
-                        .HasForeignKey("TypographyId")
+                        .HasForeignKey("MaterialId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Typography");
+                    b.HasOne("ForBD.Models.Plan", "Plan")
+                        .WithMany("Materials")
+                        .HasForeignKey("PlanId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("EducationMaterial");
+
+                    b.Navigation("Plan");
                 });
 
-            modelBuilder.Entity("ForBD.Recommendation", b =>
+            modelBuilder.Entity("ForBD.Models.Recommendation", b =>
                 {
-                    b.HasOne("ForBD.Material", "Material")
+                    b.HasOne("ForBD.Models.Material", "Material")
                         .WithMany()
                         .HasForeignKey("MaterialId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("ForBD.Plan", "Plan")
+                    b.HasOne("ForBD.Models.Plan", "Plan")
                         .WithMany("Recommendations")
                         .HasForeignKey("PlanId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
-                    b.HasOne("ForBD.Teacher", "Teacher")
+                    b.HasOne("ForBD.Models.Teacher", "Teacher")
                         .WithMany("Recommendations")
                         .HasForeignKey("TeacherId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -267,45 +221,28 @@ namespace ForBD.Data.Migrations
                     b.Navigation("Teacher");
                 });
 
-            modelBuilder.Entity("ForBD.Typography", b =>
-                {
-                    b.HasOne("ForBD.Accounting", "Accounting")
-                        .WithOne("Typography")
-                        .HasForeignKey("ForBD.Typography", "AccountingId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.Navigation("Accounting");
-                });
-
-            modelBuilder.Entity("ForBD.Accounting", b =>
-                {
-                    b.Navigation("Typography");
-                });
-
-            modelBuilder.Entity("ForBD.Discipline", b =>
+            modelBuilder.Entity("ForBD.Models.Discipline", b =>
                 {
                     b.Navigation("MaterialDisciplines");
                 });
 
-            modelBuilder.Entity("ForBD.Material", b =>
+            modelBuilder.Entity("ForBD.Models.Material", b =>
                 {
                     b.Navigation("MaterialDisciplines");
-                });
 
-            modelBuilder.Entity("ForBD.Plan", b =>
-                {
-                    b.Navigation("Recommendations");
-                });
-
-            modelBuilder.Entity("ForBD.Teacher", b =>
-                {
-                    b.Navigation("Recommendations");
-                });
-
-            modelBuilder.Entity("ForBD.Typography", b =>
-                {
                     b.Navigation("Plans");
+                });
+
+            modelBuilder.Entity("ForBD.Models.Plan", b =>
+                {
+                    b.Navigation("Materials");
+
+                    b.Navigation("Recommendations");
+                });
+
+            modelBuilder.Entity("ForBD.Models.Teacher", b =>
+                {
+                    b.Navigation("Recommendations");
                 });
 #pragma warning restore 612, 618
         }

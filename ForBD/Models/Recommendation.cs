@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
-namespace ForBD
+namespace ForBD.Models
 {
     public class Recommendation
     {

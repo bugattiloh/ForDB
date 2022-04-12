@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
-namespace ForBD
+namespace ForBD.Models
 {
     public class Plan
     {
@@ -17,9 +17,6 @@ namespace ForBD
 
         public ICollection<Recommendation> Recommendations { get; set; }
 
-        [ForeignKey(nameof(Typography))]
-        public int TypographyId { get; set; }
-
-        public Typography Typography { get; set; }
+        public ICollection<MaterialPlan> Materials { get; set; }
     }
 }

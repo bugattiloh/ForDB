@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using ForBD.Models;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -26,21 +27,19 @@ namespace ForBD
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Typography>().HasOne<Accounting>(t => t.Accounting).WithOne(a => a.Typography)
-                .OnDelete(DeleteBehavior.NoAction);
-            modelBuilder.Entity<MaterialDiscipline>().HasKey(md => new {md.DisciplineId, md.MaterialId});
+            modelBuilder.Entity<MaterialDiscipline>().HasKey(md => new { md.DisciplineId, md.MaterialId });
+            modelBuilder.Entity<MaterialPlan>().HasKey(md => new { md.PlanId, md.MaterialId });
             modelBuilder.Entity<Recommendation>().HasOne<Plan>(r => r.Plan).WithMany(p => p.Recommendations)
                 .OnDelete(DeleteBehavior.NoAction);
             base.OnModelCreating(modelBuilder);
         }
 
-        public DbSet<Accounting> Accountings { get; set; }
         public DbSet<Discipline> Disciplines { get; set; }
         public DbSet<Material> Materials { get; set; }
         public DbSet<MaterialDiscipline> MaterialDisciplines { get; set; }
         public DbSet<Plan> Plans { get; set; }
         public DbSet<Recommendation> Recommendations { get; set; }
         public DbSet<Teacher> Teachers { get; set; }
-        public DbSet<Typography> Typographies { get; set; }
+        public DbSet<MaterialPlan> MaterialPlan { get; set; }
     }
 }
